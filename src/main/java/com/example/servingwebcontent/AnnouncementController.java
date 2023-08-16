@@ -28,7 +28,7 @@ public class AnnouncementController {
 
 //    @GetMapping
 //    public String listAnnouncements(Model model) {
-//        List<Announcement> announcements = announcementDAO.getAllAnnouncements(); // 從 DAO 中獲取所有公告
+//        List<Announcement> announcements = announcementDAO.getAllAnnouncements(); 
 //        model.addAttribute("announcements", announcements);
 //        return "announcement/list";
 //    }
