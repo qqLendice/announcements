@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公布項目管理</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- <link rel="stylesheet" href="/css/styles.css">  -->
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>公布項目管理</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>標題</th>
+                <th>發佈日期</th>
+                <th>截止日期</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody id="item-list">
+            <!-- items -->
+        </tbody>
+    </table>
+
+    <div id="pagination">
+        <button id="prev-page">上一頁</button>
+        <button id="next-page">下一頁</button>
+        <button id="prev-page">新增</button>
+        <button id="next-page">刪除</button>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            var itemsPerPage = 5; // page 5 item
+            var currentPage = 1;
+            var items = [
+                { title: "item1", publishDate: "2023-08-01", endDate: "2023-08-10" },
+                { title: "item2", publishDate: "2023-08-05", endDate: "2023-08-15" },
+                { title: "item3", publishDate: "2023-08-10", endDate: "2023-08-20" },
+                // more...
+            ];
+
+            function displayItems(page) {
+                $("#item-list").empty();
+                var startIndex = (page - 1) * itemsPerPage;
+                var endIndex = startIndex + itemsPerPage;
+                for (var i = startIndex; i < endIndex && i < items.length; i++) {
+                    var item = items[i];
+                    var row = $("<tr>");
+                    row.append($("<td>").text(item.title));
+                    row.append($("<td>").text(item.publishDate));
+                    row.append($("<td>").text(item.endDate));
+                    var actions = $("<td>");
+                    actions.append($("<button class='edit'>修改</button>").data("index", i));
+                    actions.append($("<button class='delete'>刪除</button>").data("index", i));
+                    row.append(actions);
+                    $("#item-list").append(row);
+                }
+            }
+
+            function updatePagination() {
+                $("#prev-page").prop("disabled", currentPage === 1);
+                $("#next-page").prop("disabled", currentPage * itemsPerPage >= items.length);
+            }
+
+            function editItem(index) {
+                console.log("edit：" + items[index].title);
+            }
+
+            function deleteItem(index) {
+                console.log("delete：" + items[index].title);
+            }
+
+            $("#prev-page").click(function () {
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayItems(currentPage);
+                    updatePagination();
+                }
+            });
+
+            $("#next-page").click(function () {
+                if (currentPage * itemsPerPage < items.length) {
+                    currentPage++;
+                    displayItems(currentPage);
+                    updatePagination();
+                }
+            });
+
+            $(document).on("click", ".edit", function () {
+                var index = $(this).data("index");
+                editItem(index);
+            });
+
+            $(document).on("click", ".delete", function () {
+                var index = $(this).data("index");
+                deleteItem(index);
+                items.splice(index, 1);
+                displayItems(currentPage);
+                updatePagination();
+            });
+
+            displayItems(currentPage);
+            updatePagination();
+        });
+    </script>
+
+</body>
+
+</html>

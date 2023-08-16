@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>編輯公佈事項</title>
+	<style>
+		.item {
+			width: 80%;
+			display: flex;
+			margin-bottom: 1%;
+		}
+
+		.itemLabel {
+			flex: 1;
+		}
+
+		.itemContent {
+			flex: 5;
+		}
+
+		.arrangeCenter {
+			display: flex;
+			justify-content: center;
+		}
+
+		#content {
+			width: 100%;
+			min-height: 200px; 
+			border: 1px solid #ccc;
+		}
+	</style>
+
+	<script type="text/javascript" src="/js/ckeditor5/ckeditor.js"></script>
+</head>
+
+<body>
+	<h3>內容</h3>
+	<form th:action="@{/announcements/__${announcement.id}__/edit}" method="post">
+		<div class="item">
+			<div class="itemLabel">
+				<label for="title">標題:</label>
+			</div>
+			<div class="itemContent">
+				<input type="text" id="title" name="title" th:value="${announcement.title}" />
+			</div>
+		</div>
+		<div class="item">
+			<div class="itemLabel">
+				<label for="publishDate">發佈日期:</label>
+			</div>
+			<div class="itemContent">
+				<input type="date" id="publishDate" name="publishDate" th:value="${announcement.publishDate}" />
+			</div>
+		</div>
+		<div class="item">
+			<div class="itemLabel">
+				<label for="endDate">截止日期:</label>
+			</div>
+			<div class="itemContent">
+				<input type="date" id="endDate" name="endDate" th:value="${announcement.endDate}" />
+			</div>
+		</div>
+		<div class="item">
+			<div class="itemLabel">
+				<label for="publisher">公佈者:</label>
+			</div>
+			<div class="itemContent">
+				<input type="text" id="publisher" name="publisher" th:value="${announcement.publisher}" readonly />
+			</div>
+		</div>
+		<div class="item">
+			<div class="itemLabel">
+				<label for="publisher">公佈內容:</label>
+			</div>
+			<div class="itemContent">
+				<textarea id="content" name="content" placeholder="請在這裡輸入內容" th:utext="${announcement.content}"></textarea>
+			</div>
+		</div>
+		<div class="arrangeCenter">
+			<input type="submit" value="Update" />
+		</div>
+	</form>
+</body>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#content'))
+        .then(editor => {
+            console.log(editor);
+        })    
+        .catch( error => {
+	        console.error( error );
+	    } );
+</script>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>瀏覽公布事項</title>
+	<style>
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		th,
+		td {
+			border: 1px solid #ddd;
+			text-align: center;
+		}
+
+		.arrangeCenter {
+			display: flex;
+			justify-content: center;
+		}
+
+		.separateLine {
+			border-top: 2px solid #ccc;
+		}
+		.marginRight{
+			margin-right: 1%;
+		}
+	</style>
+</head>
+
+<body>
+	<h3>列表</h3>
+	<table>
+		<tr>
+			<th>標題</th>
+			<th>發佈日期</th>
+			<th>截止日期</th>
+			<th>修改</th>
+			<th>刪除</th>
+		</tr>
+		<tr class="separateLine">
+			<td colspan="5"></td>
+		</tr>
+		<!-- Loop through announcements -->
+		<th:block th:each="announcement : ${page.content}">
+			<tr>
+				<td th:text="${announcement.title}"></td>
+				<td th:text="${announcement.publishDate}"></td>
+				<td th:text="${announcement.endDate}"></td>
+				<td rowspan="2"><a th:href="@{/announcements/__${announcement.id}__/edit}">修改</a></td>
+				<td rowspan="2"><a th:href="@{/announcements/__${announcement.id}__/delete}">刪除</a></td>
+			</tr>
+			<tr>
+				<td colspan="3" th:utext="${announcement.content}"></td>
+			</tr>
+			<tr class="separateLine">
+				<td colspan="5"></td>
+			</tr>
+		</th:block>
+	</table>
+	<div class="arrangeCenter">
+		<th:block th:each="pageNumber : ${#numbers.sequence(1, page.totalPages)}">
+			<div class="marginRight">
+				<a th:href="@{/announcements(page=${pageNumber - 1})}" th:text="${pageNumber}"></a>
+			</div>
+		</th:block>
+	</div>
+	<div class="arrangeCenter">
+		<a th:href="@{/announcements/new}">新增</a>
+	</div>
+</body>
+
+</html>
